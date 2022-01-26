@@ -1,10 +1,11 @@
 <template>
   <div>
-    <table class="table table-hover">
+    <table class="table table-hover w-auto">
   <thead>
     <tr>
       <th scope="col">title</th>
       <th scope="col">started by</th>
+       <th scope="col"><i class="fas fa-reply"></i></th>
     </tr>
   </thead>
   <tbody>
@@ -17,6 +18,7 @@
         {{thread.title}}
         </th>
       <td>{{thread.User.name}}</td>
+      <td>{{thread.Comments.length}}</td>
     </tr>
   </tbody>
 </table>
@@ -24,12 +26,13 @@
 </template>
 <script>
 import axios from 'axios'
-import Navbar from "../components/Navbar.vue"
+
 export default {
   name:'Threads',
   data() {
     return {
-      threads:[]
+      threads:[],
+
     }
   },
    methods: {
@@ -41,15 +44,15 @@ export default {
           }
         })
         .then(res=>{
-        //  console.log(res.data);
+      
         this.threads = res.data
         })
         .catch(err=>{
         console.log(err);
         })
       },
+ 
     clickThreadDetail(thread){
-      // console.log(thread,'ihi dari mythread');
       this.$emit("threadDetailId",'threadsDetail',thread)
     }
   },
@@ -57,7 +60,7 @@ export default {
     this.fetchThreads()
   },
   components:{
-    Navbar
+    
   }
 }
 </script>

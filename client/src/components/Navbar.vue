@@ -20,11 +20,6 @@
                 @click.prevent="clickHrefThread"
                 >My Threads</a>
               </li>
-                <li class="nav-item">
-                <a class="nav-link" href="#"
-                @click.prevent="clickHrefPost"
-                >Post A Thread</a>
-              </li>
             </ul>
           </div>
           <div>
@@ -60,6 +55,11 @@ export default {
     },
     clickHrefLogOut(){
       this.$emit("backToLogin","loginPage")
+          swal({
+            title: "SUCCESS",
+            text: "you're logged out",
+            icon: "success",
+            });
     },
     clickHrefPost(){
       this.$emit("directToPostThread","threadForm")
@@ -68,3 +68,8 @@ export default {
   },
 }
 </script>
+<style scoped>
+.navbar-collapse{
+  justify-content: space-between;
+}
+</style>

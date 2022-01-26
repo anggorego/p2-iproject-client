@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div class="row mt-5">
      <form>
     <fieldset>
       <legend>LOG IN HERE</legend>
@@ -18,6 +18,10 @@
       @click.prevent="clickButtonLogin"
       >Submit</button>
     </fieldset>
+    <p class="mt-4">Don't have an account yet ?</p>
+     <button type="submit" class="btn btn-secondary mb-2"
+      @click.prevent="clickButtonRegisterLogin"
+      >register here</button>
   </form>
     
   </div>
@@ -34,6 +38,13 @@ export default {
   },
   methods: {
     clickButtonLogin(){
+        if(!this.emailLogin || !this.passwordLogin){
+           swal({
+              title: "FAILED",
+              text:"Invalid email/password",
+              icon: "error",
+            });
+        }
       axios
       .post("http://localhost:3000/login",{
             email:this.emailLogin,
@@ -52,9 +63,13 @@ export default {
         .catch((err)=>{
             swal({
               title: "FAILED",
+              text:"Invalid email/password",
               icon: "error",
             });
         })
+    },
+    clickButtonRegisterLogin(){
+       this.$emit("directToRegister", "registerPage")
     }
   },
 }

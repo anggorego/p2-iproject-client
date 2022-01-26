@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div class="row">
     <form>
     <legend>Post A thread</legend>
     <div class="form-group">

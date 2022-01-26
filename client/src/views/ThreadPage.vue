@@ -1,32 +1,17 @@
 <template>
-<div>
+<div class="mt-5">
   <div>
-  <table class="table table-hover">
-  <thead>
-      <tr>
-      <th scope="col">title</th>
-      <th scope="col">description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr class="table-dark"
-       v-for="thread in threads"
-      :key="thread.id"
-      @click="clickThreadDetailfromThreadPage(thread)"
-      >
-      
-      <th scope="row">
-        {{thread.title}}
-        </th>
-      <td>{{thread.description}}</td>
-  </tbody>
-</table>
+  <ThreadsThreadPage
+  @threadDetailIdThreadPage="threadDetailIdThreadPage"
+  @afterDelete="afterDelete"
+  ></ThreadsThreadPage>
   </div>
 </div>
 </template>
 <script>
 import Comment from "../components/Comment.vue"
-import axios from 'axios'
+import ThreadsThreadPage from "../components/threadsThreadPage.vue"
+// import axios from 'axios'
 export default {
   name:'ThreadPage',
   data() {
@@ -35,32 +20,21 @@ export default {
     }
   },
   methods: {
-    fetchThreadsByUser(){
-        axios
-        .get("http://localhost:3000/threads/byuser",{
-           headers:{
-              access_token: localStorage.access_token
-           }
-         })
-         .then(res=>{
-          //  console.log(res.data);
-          this.threads = res.data
-          })
-          .catch(err=>{
-          console.log(err);
-          })
+
+    threadDetailIdThreadPage(page,thread){
+  
+      this.$emit('threadDetailId',page,thread)
     },
-    clickThreadDetailfromThreadPage(thread){
-      console.log('jalan');
-      console.log(thread);
-      this.$emit("threadDetailIdThread",'threadsDetail',thread)
+    afterDelete(page){
+      this.$emit('afterDelete',page,thread)
     }
   },
   created() {
-    this.fetchThreadsByUser()
+    // this.fetchThreadsByUser()
   },
   components:{
-    Comment
+    Comment,
+    ThreadsThreadPage
   }
 }
 </script>

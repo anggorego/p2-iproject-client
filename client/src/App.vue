@@ -14,6 +14,7 @@
   @directToHome = "directToHome"
   ></Register>
   <Login
+  @directToRegister="directToRegister"
   @directToHome = "directToHome"
    v-else-if="pageName == 'loginPage'"
   ></Login>
@@ -21,10 +22,12 @@
   v-else-if="pageName == 'homePage'"
   @threadDetailId="threadDetailId"
   @userData="userData"
+  @directToThreadsList="directToThreadsList"
   ></Home>
   <ThreadPage
   v-else-if="pageName == 'threadsPage'"
-  @threadDetailIdThread="threadDetailIdThread"
+  @threadDetailId="threadDetailId"
+  @afterDelete="afterDelete"
   ></ThreadPage>
   <ThreadDetail
   v-else-if="pageName == 'threadsDetail'"
@@ -75,7 +78,7 @@ export default {
       this.pageName = page
     },
     threadDetailId(page,thread){
-      // console.log(thread,'yang ini');
+     
       this.pageName = page
       this.thread = thread
     },
@@ -93,8 +96,13 @@ export default {
     },
     threadDetailIdThread(page,thread){
       this.pageName=page
-      console.log(thread,'ini yg dimasksu');
       this.thread=thread
+    },
+    afterDelete(page){
+      this.pageName=page
+    },
+    directToRegister(page){
+      this.pageName =page
     }
   },
   components:{

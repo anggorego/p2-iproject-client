@@ -10996,6 +10996,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
+//
+//
 var _default = {
   name: 'Login',
   data: function data() {
@@ -11007,6 +11011,14 @@ var _default = {
   methods: {
     clickButtonLogin: function clickButtonLogin() {
       var _this = this;
+
+      if (!this.emailLogin || !this.passwordLogin) {
+        swal({
+          title: "FAILED",
+          text: "Invalid email/password",
+          icon: "error"
+        });
+      }
 
       _axios.default.post("http://localhost:3000/login", {
         email: this.emailLogin,
@@ -11024,9 +11036,13 @@ var _default = {
       }).catch(function (err) {
         swal({
           title: "FAILED",
+          text: "Invalid email/password",
           icon: "error"
         });
       });
+    },
+    clickButtonRegisterLogin: function clickButtonRegisterLogin() {
+      this.$emit("directToRegister", "registerPage");
     }
   }
 };
@@ -11043,7 +11059,7 @@ exports.default = _default;
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "row" }, [
+  return _c("div", { staticClass: "row mt-5" }, [
     _c("form", [
       _c("fieldset", [
         _c("legend", [_vm._v("LOG IN HERE")]),
@@ -11142,6 +11158,23 @@ exports.default = _default;
           [_vm._v("Submit")]
         ),
       ]),
+      _vm._v(" "),
+      _c("p", { staticClass: "mt-4" }, [_vm._v("Don't have an account yet ?")]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-secondary mb-2",
+          attrs: { type: "submit" },
+          on: {
+            click: function ($event) {
+              $event.preventDefault()
+              return _vm.clickButtonRegisterLogin.apply(null, arguments)
+            },
+          },
+        },
+        [_vm._v("register here")]
+      ),
     ]),
   ])
 }
@@ -11276,7 +11309,7 @@ exports.default = _default;
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "row" }, [
+  return _c("div", { staticClass: "row mt-5" }, [
     _c("form", [
       _c("fieldset", [
         _c("legend", [_vm._v("REGISTER FORM")]),
@@ -11446,7 +11479,7 @@ exports.default = _default;
         ),
       ]),
       _vm._v(" "),
-      _c("p", [_vm._v("already have an account ? ")]),
+      _c("p", { staticClass: "mt-3" }, [_vm._v(" already have an account ? ")]),
       _vm._v(" "),
       _c(
         "button",
@@ -11494,18 +11527,80 @@ render._withStripped = true
         
       }
     })();
-},{"axios":"node_modules/axios/index.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/Navbar.vue":[function(require,module,exports) {
+},{"axios":"node_modules/axios/index.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+var bundleURL = null;
+
+function getBundleURLCached() {
+  if (!bundleURL) {
+    bundleURL = getBundleURL();
+  }
+
+  return bundleURL;
+}
+
+function getBundleURL() {
+  // Attempt to find the URL of the current script and use that as the base URL
+  try {
+    throw new Error();
+  } catch (err) {
+    var matches = ('' + err.stack).match(/(https?|file|ftp|chrome-extension|moz-extension):\/\/[^)\n]+/g);
+
+    if (matches) {
+      return getBaseURL(matches[0]);
+    }
+  }
+
+  return '/';
+}
+
+function getBaseURL(url) {
+  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)?\/[^/]+(?:\?.*)?$/, '$1') + '/';
+}
+
+exports.getBundleURL = getBundleURLCached;
+exports.getBaseURL = getBaseURL;
+},{}],"node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
+var bundle = require('./bundle-url');
+
+function updateLink(link) {
+  var newLink = link.cloneNode();
+
+  newLink.onload = function () {
+    link.remove();
+  };
+
+  newLink.href = link.href.split('?')[0] + '?' + Date.now();
+  link.parentNode.insertBefore(newLink, link.nextSibling);
+}
+
+var cssTimeout = null;
+
+function reloadCSS() {
+  if (cssTimeout) {
+    return;
+  }
+
+  cssTimeout = setTimeout(function () {
+    var links = document.querySelectorAll('link[rel="stylesheet"]');
+
+    for (var i = 0; i < links.length; i++) {
+      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
+        updateLink(links[i]);
+      }
+    }
+
+    cssTimeout = null;
+  }, 50);
+}
+
+module.exports = reloadCSS;
+},{"./bundle-url":"node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"src/components/Navbar.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-//
-//
-//
-//
-//
 //
 //
 //
@@ -11559,6 +11654,11 @@ var _default = {
     },
     clickHrefLogOut: function clickHrefLogOut() {
       this.$emit("backToLogin", "loginPage");
+      swal({
+        title: "SUCCESS",
+        text: "you're logged out",
+        icon: "success"
+      });
     },
     clickHrefPost: function clickHrefPost() {
       this.$emit("directToPostThread", "threadForm");
@@ -11631,23 +11731,6 @@ exports.default = _default;
                     [_vm._v("My Threads")]
                   ),
                 ]),
-                _vm._v(" "),
-                _c("li", { staticClass: "nav-item" }, [
-                  _c(
-                    "a",
-                    {
-                      staticClass: "nav-link",
-                      attrs: { href: "#" },
-                      on: {
-                        click: function ($event) {
-                          $event.preventDefault()
-                          return _vm.clickHrefPost.apply(null, arguments)
-                        },
-                      },
-                    },
-                    [_vm._v("Post A Thread")]
-                  ),
-                ]),
               ]),
             ]),
             _vm._v(" "),
@@ -11711,7 +11794,7 @@ render._withStripped = true
             render: render,
             staticRenderFns: staticRenderFns,
             _compiled: true,
-            _scopeId: null,
+            _scopeId: "data-v-48d281",
             functional: undefined
           };
         })());
@@ -11731,9 +11814,13 @@ render._withStripped = true
         }
 
         
+        var reloadCSS = require('_css_loader');
+        module.hot.dispose(reloadCSS);
+        module.hot.accept(reloadCSS);
+      
       }
     })();
-},{"vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/addThread.vue":[function(require,module,exports) {
+},{"_css_loader":"node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/addThread.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11780,7 +11867,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", {}, [
+    return _c("div", { staticClass: "row" }, [
       _c("form", [
         _c("legend", [_vm._v("Post A thread")]),
         _vm._v(" "),
@@ -11865,10 +11952,10 @@ exports.default = void 0;
 
 var _axios = _interopRequireDefault(require("axios"));
 
-var _Navbar = _interopRequireDefault(require("../components/Navbar.vue"));
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+//
+//
 //
 //
 //
@@ -11909,23 +11996,19 @@ var _default = {
           access_token: localStorage.access_token
         }
       }).then(function (res) {
-        //  console.log(res.data);
         _this.threads = res.data;
       }).catch(function (err) {
         console.log(err);
       });
     },
     clickThreadDetail: function clickThreadDetail(thread) {
-      // console.log(thread,'ihi dari mythread');
       this.$emit("threadDetailId", 'threadsDetail', thread);
     }
   },
   created: function created() {
     this.fetchThreads();
   },
-  components: {
-    Navbar: _Navbar.default
-  }
+  components: {}
 };
 exports.default = _default;
         var $2b8a10 = exports.default || module.exports;
@@ -11941,7 +12024,7 @@ exports.default = _default;
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("table", { staticClass: "table table-hover" }, [
+    _c("table", { staticClass: "table table-hover w-auto" }, [
       _vm._m(0),
       _vm._v(" "),
       _c(
@@ -11964,6 +12047,8 @@ exports.default = _default;
               ]),
               _vm._v(" "),
               _c("td", [_vm._v(_vm._s(thread.User.name))]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(thread.Comments.length))]),
             ]
           )
         }),
@@ -11982,6 +12067,10 @@ var staticRenderFns = [
         _c("th", { attrs: { scope: "col" } }, [_vm._v("title")]),
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("started by")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [
+          _c("i", { staticClass: "fas fa-reply" }),
+        ]),
       ]),
     ])
   },
@@ -12014,7 +12103,7 @@ render._withStripped = true
         
       }
     })();
-},{"axios":"node_modules/axios/index.js","../components/Navbar.vue":"src/components/Navbar.vue","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/views/Home.vue":[function(require,module,exports) {
+},{"axios":"node_modules/axios/index.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/views/Home.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12044,18 +12133,99 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var _default = {
   name: 'Home',
   data: function data() {
     return {
       threads: [],
       thread: {},
-      user: ''
+      user: '',
+      weight: '',
+      height: '',
+      age: '',
+      sex: '',
+      bmrResult: {},
+      food: '',
+      foodResult: {
+        name: '',
+        nutrient: {}
+      },
+      foodValue: false
     };
   },
   methods: {
     threadDetailId: function threadDetailId(page, thread) {
       this.$emit('threadDetailId', page, thread);
+    },
+    clickHrefThread: function clickHrefThread() {
+      this.$emit("directToThreadsList", "threadForm");
     },
     fetchUser: function fetchUser() {
       var _this = this;
@@ -12071,12 +12241,63 @@ var _default = {
       }).catch(function (err) {
         console.log(err);
       });
+    },
+    bmwCalculatorApi: function bmwCalculatorApi() {
+      var _this2 = this;
+
+      if (!this.sex || !this.weight || !this.height || !this.age) {
+        swal({
+          title: "FAILED",
+          text: "Please enter all datas",
+          icon: "error"
+        });
+      }
+
+      _axios.default.get("http://localhost:3000/bmr?weight=".concat(this.weight, "&&height=").concat(this.height, "&&age=").concat(this.age, "&&sex=").concat(this.sex)).then(function (res) {
+        _this2.weight = '', _this2.height = '', _this2.age = '';
+        _this2.sex = '';
+        swal({
+          title: "SUCCESS",
+          text: "your BMR : ".concat(res.data.bmr, " "),
+          icon: "success"
+        });
+        _this2.bmrResult = res.data;
+        _this2.foodValue = true;
+      }).catch(function (err) {
+        console.log(err);
+        swal({
+          title: "FAILED",
+          icon: "error"
+        });
+      });
+    },
+    directToThreadsList: function directToThreadsList() {
+      this.$emit("directToThreadsList", "threadForm");
+    },
+    foodCalculator: function foodCalculator() {
+      var _this3 = this;
+
+      if (!this.food) {
+        swal({
+          title: "FAILED",
+          text: "Please enter food name",
+          icon: "error"
+        });
+      }
+
+      _axios.default.get("https://api.edamam.com/api/food-database/v2/parser?app_id=a96fddc0&app_key=e6dcb91182b1a50c7431a62b17dd7f92&ingr=".concat(this.food)).then(function (res) {
+        _this3.foodResult.nutrient = res.data.parsed[0].food.nutrients;
+        _this3.foodResult.name = res.data.parsed[0].food.label;
+      }).catch(function (err) {
+        console.log(err);
+      });
     }
   },
   components: {
     Navbar: _Navbar.default,
     AddThread: _addThread.default,
-    Threads: _threads.default
+    Threads: _threads.default // Loader
+
   },
   created: function created() {
     this.fetchUser();
@@ -12095,28 +12316,288 @@ exports.default = _default;
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("div", { staticClass: "row flex" }),
-    _vm._v(" "),
-    _c("div"),
+  return _c("div", { staticClass: "row mt-5" }, [
+    _c("div", { staticClass: "card" }, [
+      _c(
+        "form",
+        [
+          _c("h2", [_vm._v("BMR CALCULATOR")]),
+          _vm._v(" "),
+          _c("h5", [_vm._v("Basal Metabolic Rate")]),
+          _vm._v(" "),
+          _vm.foodValue
+            ? _c("h2", [_vm._v("result:" + _vm._s(_vm.bmrResult.bmr) + " ")])
+            : _vm._e(),
+          _vm._v(" "),
+          _c("div", { staticClass: "flex form-group" }, [
+            _c(
+              "label",
+              {
+                staticClass: "col-form-label col-form-label-sm mt-4",
+                attrs: { for: "inputSmall" },
+              },
+              [_vm._v("WEIGHT (.Kg)")]
+            ),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.weight,
+                  expression: "weight",
+                },
+              ],
+              staticClass: "form-control form-control-sm",
+              attrs: { type: "text", id: "inputSmall" },
+              domProps: { value: _vm.weight },
+              on: {
+                input: function ($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.weight = $event.target.value
+                },
+              },
+            }),
+            _vm._v(" "),
+            _c(
+              "label",
+              {
+                staticClass: "col-form-label col-form-label-sm mt-4",
+                attrs: { for: "inputSmall" },
+              },
+              [_vm._v("HEIGHT (.Cm)")]
+            ),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.height,
+                  expression: "height",
+                },
+              ],
+              staticClass: "form-control form-control-sm",
+              attrs: { type: "text", id: "inputSmall" },
+              domProps: { value: _vm.height },
+              on: {
+                input: function ($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.height = $event.target.value
+                },
+              },
+            }),
+            _vm._v(" "),
+            _c(
+              "label",
+              {
+                staticClass: "col-form-label col-form-label-sm mt-4",
+                attrs: { for: "inputSmall" },
+              },
+              [_vm._v("AGE")]
+            ),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.age,
+                  expression: "age",
+                },
+              ],
+              staticClass: "form-control form-control-sm",
+              attrs: { type: "text", id: "inputSmall" },
+              domProps: { value: _vm.age },
+              on: {
+                input: function ($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.age = $event.target.value
+                },
+              },
+            }),
+            _vm._v(" "),
+            _c(
+              "label",
+              {
+                staticClass: "col-form-label col-form-label-sm mt-4",
+                attrs: { for: "inputSmall" },
+              },
+              [_vm._v("SEX")]
+            ),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.sex,
+                  expression: "sex",
+                },
+              ],
+              staticClass: "form-control form-control-sm",
+              attrs: { type: "text", id: "inputSmall" },
+              domProps: { value: _vm.sex },
+              on: {
+                input: function ($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.sex = $event.target.value
+                },
+              },
+            }),
+          ]),
+          _vm._v(" "),
+          _c("center", [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary mb-3",
+                attrs: { type: "submit" },
+                on: {
+                  click: function ($event) {
+                    $event.preventDefault()
+                    return _vm.bmwCalculatorApi.apply(null, arguments)
+                  },
+                },
+              },
+              [_vm._v("Submit")]
+            ),
+          ]),
+        ],
+        1
+      ),
+    ]),
     _vm._v(" "),
     _c(
       "div",
-      [_c("Threads", { on: { threadDetailId: _vm.threadDetailId } })],
+      [
+        _c("small", [_vm._v("click to post")]),
+        _c("br"),
+        _vm._v(" "),
+        _c("i", {
+          staticClass: "fas fa-plus btn",
+          on: { click: _vm.directToThreadsList },
+        }),
+        _vm._v(" "),
+        _c("Threads", { on: { threadDetailId: _vm.threadDetailId } }),
+      ],
       1
     ),
     _vm._v(" "),
-    _c("div"),
+    _c("div", { staticClass: "card" }, [
+      _c(
+        "form",
+        [
+          _c("h2", [_vm._v("Food Calories")]),
+          _vm._v(" "),
+          _c("small", [_vm._v("type down here")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c(
+              "label",
+              {
+                staticClass: "col-form-label col-form-label-sm mt-4",
+                attrs: { for: "inputSmall" },
+              },
+              [_vm._v("Food Name")]
+            ),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.food,
+                  expression: "food",
+                },
+              ],
+              staticClass: "form-control form-control-sm",
+              attrs: { type: "text", id: "inputSmall" },
+              domProps: { value: _vm.food },
+              on: {
+                input: function ($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.food = $event.target.value
+                },
+              },
+            }),
+          ]),
+          _vm._v(" "),
+          _c("center", [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary mb-5",
+                attrs: { type: "submit" },
+                on: {
+                  click: function ($event) {
+                    $event.preventDefault()
+                    return _vm.foodCalculator.apply(null, arguments)
+                  },
+                },
+              },
+              [_vm._v("Submit")]
+            ),
+          ]),
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _vm.foodResult.name.length > 0
+        ? _c("div", { staticClass: "mr-3" }, [
+            _c("small", [_vm._v(_vm._s(_vm.foodResult.name))]),
+            _vm._v(" "),
+            _c("table", { staticStyle: { border: "1px solid" } }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c("tbody", { staticStyle: { border: "1px solid" } }, [
+                _c("tr", [
+                  _c("td", { staticStyle: { border: "1px solid" } }, [
+                    _vm._v(_vm._s(_vm.foodResult.nutrient["ENERC_KCAL"])),
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(_vm.foodResult.nutrient["FAT"]))]),
+                ]),
+              ]),
+            ]),
+          ])
+        : _vm._e(),
+    ]),
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", { staticStyle: { border: "1px solid" } }, [
+      _c("tr", [
+        _c("th", { staticStyle: { border: "1px solid" } }, [
+          _vm._v("Energi KCAL"),
+        ]),
+        _vm._v(" "),
+        _c("th", [_vm._v("FAT")]),
+      ]),
+    ])
+  },
+]
 render._withStripped = true
 
           return {
             render: render,
             staticRenderFns: staticRenderFns,
             _compiled: true,
-            _scopeId: null,
+            _scopeId: "data-v-b00bbc",
             functional: undefined
           };
         })());
@@ -12136,9 +12617,13 @@ render._withStripped = true
         }
 
         
+        var reloadCSS = require('_css_loader');
+        module.hot.dispose(reloadCSS);
+        module.hot.accept(reloadCSS);
+      
       }
     })();
-},{"../components/Navbar.vue":"src/components/Navbar.vue","../components/addThread.vue":"src/components/addThread.vue","../components/threads.vue":"src/components/threads.vue","axios":"node_modules/axios/index.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/Comment.vue":[function(require,module,exports) {
+},{"../components/Navbar.vue":"src/components/Navbar.vue","../components/addThread.vue":"src/components/addThread.vue","../components/threads.vue":"src/components/threads.vue","axios":"node_modules/axios/index.js","_css_loader":"node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/Comment.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12150,7 +12635,6 @@ var _axios = _interopRequireDefault(require("axios"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-//
 //
 //
 //
@@ -12183,8 +12667,6 @@ var _default = {
           access_token: localStorage.access_token
         }
       }).then(function (res) {
-        console.log(res.data);
-
         _this.$emit("backToHome", 'homePage');
       }).catch(function (err) {
         console.log(err);
@@ -12205,7 +12687,7 @@ exports.default = _default;
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
+  return _c("div", { staticClass: "row" }, [
     _c("div", { staticClass: "form-group" }, [
       _c(
         "label",
@@ -12223,7 +12705,7 @@ exports.default = _default;
           },
         ],
         staticClass: "form-control",
-        attrs: { id: "exampleTextarea", rows: "3" },
+        attrs: { id: "exampleTextarea", rows: "2", cols: "100" },
         domProps: { value: _vm.descriptionComment },
         on: {
           input: function ($event) {
@@ -12249,7 +12731,6 @@ exports.default = _default;
         [_vm._v("Submit")]
       ),
     ]),
-    _vm._v("\n" + _vm._s(_vm.threadData) + "\n  "),
   ])
 }
 var staticRenderFns = []
@@ -12281,15 +12762,13 @@ render._withStripped = true
         
       }
     })();
-},{"axios":"node_modules/axios/index.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/views/ThreadPage.vue":[function(require,module,exports) {
+},{"axios":"node_modules/axios/index.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/threadsThreadPage.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-
-var _Comment = _interopRequireDefault(require("../components/Comment.vue"));
 
 var _axios = _interopRequireDefault(require("axios"));
 
@@ -12321,8 +12800,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
+//
+//
+//
+//
 var _default = {
-  name: 'ThreadPage',
+  name: 'ThreadsThreadPage',
   data: function data() {
     return {
       threads: []
@@ -12337,23 +12822,202 @@ var _default = {
           access_token: localStorage.access_token
         }
       }).then(function (res) {
-        //  console.log(res.data);
         _this.threads = res.data;
       }).catch(function (err) {
         console.log(err);
       });
     },
-    clickThreadDetailfromThreadPage: function clickThreadDetailfromThreadPage(thread) {
-      console.log('jalan');
-      console.log(thread);
-      this.$emit("threadDetailIdThread", 'threadsDetail', thread);
-    }
+    clickThreadDetail: function clickThreadDetail(thread) {
+      this.$emit("threadDetailIdThreadPage", 'threadsDetail', thread);
+    },
+    deleteThread: function deleteThread(id) {
+      var _this2 = this;
+
+      _axios.default.delete("http://localhost:3000/threads/".concat(id), {
+        headers: {
+          access_token: localStorage.access_token
+        }
+      }).then(function (res) {
+        _this2.$emit("afterDelete", 'homePage');
+
+        swal({
+          title: "SUCCESS",
+          text: "thread success to delete",
+          icon: "success"
+        });
+      }).catch(function (err) {
+        console.log(err);
+        swal({
+          title: "FAILED",
+          icon: "error"
+        });
+      });
+    },
+    editThread: function editThread(id) {}
   },
   created: function created() {
     this.fetchThreadsByUser();
+  }
+};
+exports.default = _default;
+        var $d6b230 = exports.default || module.exports;
+      
+      if (typeof $d6b230 === 'function') {
+        $d6b230 = $d6b230.options;
+      }
+    
+        /* template */
+        Object.assign($d6b230, (function () {
+          var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("table", { staticClass: "table table-hover" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c(
+        "tbody",
+        _vm._l(_vm.threads, function (thread) {
+          return _c("tr", { key: thread.id, staticClass: "table-dark" }, [
+            _c(
+              "th",
+              {
+                attrs: { scope: "row" },
+                on: {
+                  click: function ($event) {
+                    return _vm.clickThreadDetail(thread)
+                  },
+                },
+              },
+              [_vm._v("\n        " + _vm._s(thread.title) + "\n        ")]
+            ),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(thread.description))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(thread.Comments.length))]),
+            _vm._v(" "),
+            _c("td", [
+              _c("i", {
+                staticClass: "fas fa-trash btn",
+                on: {
+                  click: function ($event) {
+                    $event.preventDefault()
+                    return _vm.deleteThread(thread.id)
+                  },
+                },
+              }),
+            ]),
+            _vm._v(" "),
+            _c("td", [
+              _c("i", {
+                staticClass: "fas fa-edit btn",
+                on: {
+                  click: function ($event) {
+                    $event.preventDefault()
+                    return _vm.editThread(thread.id)
+                  },
+                },
+              }),
+            ]),
+          ])
+        }),
+        0
+      ),
+    ]),
+  ])
+}
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("title")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("started by")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [
+          _c("i", { staticClass: "fas fa-reply" }),
+        ]),
+      ]),
+    ])
+  },
+]
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$d6b230', $d6b230);
+          } else {
+            api.reload('$d6b230', $d6b230);
+          }
+        }
+
+        
+      }
+    })();
+},{"axios":"node_modules/axios/index.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/views/ThreadPage.vue":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _Comment = _interopRequireDefault(require("../components/Comment.vue"));
+
+var _threadsThreadPage = _interopRequireDefault(require("../components/threadsThreadPage.vue"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+// import axios from 'axios'
+var _default = {
+  name: 'ThreadPage',
+  data: function data() {
+    return {
+      threads: []
+    };
+  },
+  methods: {
+    threadDetailIdThreadPage: function threadDetailIdThreadPage(page, thread) {
+      this.$emit('threadDetailId', page, thread);
+    },
+    afterDelete: function afterDelete(page) {
+      this.$emit('afterDelete', page, thread);
+    }
+  },
+  created: function created() {// this.fetchThreadsByUser()
   },
   components: {
-    Comment: _Comment.default
+    Comment: _Comment.default,
+    ThreadsThreadPage: _threadsThreadPage.default
   }
 };
 exports.default = _default;
@@ -12369,54 +13033,22 @@ exports.default = _default;
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("div", [
-      _c("table", { staticClass: "table table-hover" }, [
-        _vm._m(0),
-        _vm._v(" "),
-        _c(
-          "tbody",
-          _vm._l(_vm.threads, function (thread) {
-            return _c(
-              "tr",
-              {
-                key: thread.id,
-                staticClass: "table-dark",
-                on: {
-                  click: function ($event) {
-                    return _vm.clickThreadDetailfromThreadPage(thread)
-                  },
-                },
-              },
-              [
-                _c("th", { attrs: { scope: "row" } }, [
-                  _vm._v("\n        " + _vm._s(thread.title) + "\n        "),
-                ]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(thread.description))]),
-              ]
-            )
-          }),
-          0
-        ),
-      ]),
-    ]),
+  return _c("div", { staticClass: "mt-5" }, [
+    _c(
+      "div",
+      [
+        _c("ThreadsThreadPage", {
+          on: {
+            threadDetailIdThreadPage: _vm.threadDetailIdThreadPage,
+            afterDelete: _vm.afterDelete,
+          },
+        }),
+      ],
+      1
+    ),
   ])
 }
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("title")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("description")]),
-      ]),
-    ])
-  },
-]
+var staticRenderFns = []
 render._withStripped = true
 
           return {
@@ -12445,74 +13077,7 @@ render._withStripped = true
         
       }
     })();
-},{"../components/Comment.vue":"src/components/Comment.vue","axios":"node_modules/axios/index.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
-var bundleURL = null;
-
-function getBundleURLCached() {
-  if (!bundleURL) {
-    bundleURL = getBundleURL();
-  }
-
-  return bundleURL;
-}
-
-function getBundleURL() {
-  // Attempt to find the URL of the current script and use that as the base URL
-  try {
-    throw new Error();
-  } catch (err) {
-    var matches = ('' + err.stack).match(/(https?|file|ftp|chrome-extension|moz-extension):\/\/[^)\n]+/g);
-
-    if (matches) {
-      return getBaseURL(matches[0]);
-    }
-  }
-
-  return '/';
-}
-
-function getBaseURL(url) {
-  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)?\/[^/]+(?:\?.*)?$/, '$1') + '/';
-}
-
-exports.getBundleURL = getBundleURLCached;
-exports.getBaseURL = getBaseURL;
-},{}],"node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
-var bundle = require('./bundle-url');
-
-function updateLink(link) {
-  var newLink = link.cloneNode();
-
-  newLink.onload = function () {
-    link.remove();
-  };
-
-  newLink.href = link.href.split('?')[0] + '?' + Date.now();
-  link.parentNode.insertBefore(newLink, link.nextSibling);
-}
-
-var cssTimeout = null;
-
-function reloadCSS() {
-  if (cssTimeout) {
-    return;
-  }
-
-  cssTimeout = setTimeout(function () {
-    var links = document.querySelectorAll('link[rel="stylesheet"]');
-
-    for (var i = 0; i < links.length; i++) {
-      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
-        updateLink(links[i]);
-      }
-    }
-
-    cssTimeout = null;
-  }, 50);
-}
-
-module.exports = reloadCSS;
-},{"./bundle-url":"node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"src/views/Threaddetail.vue":[function(require,module,exports) {
+},{"../components/Comment.vue":"src/components/Comment.vue","../components/threadsThreadPage.vue":"src/components/threadsThreadPage.vue","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/views/Threaddetail.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12526,6 +13091,7 @@ var _axios = _interopRequireDefault(require("axios"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+//
 //
 //
 //
@@ -12574,7 +13140,6 @@ var _default = {
           access_token: localStorage.access_token
         }
       }).then(function (res) {
-        console.log(res.data);
         _this.comments = res.data.Comments;
       }).catch(function (err) {
         console.log(err);
@@ -12582,6 +13147,29 @@ var _default = {
     },
     backToHome: function backToHome(page) {
       this.$emit("backToHome", page);
+    },
+    deleteComment: function deleteComment(threadid, commentid) {
+      var _this2 = this;
+
+      _axios.default.delete("http://localhost:3000/comments/".concat(threadid, "/").concat(commentid), {
+        headers: {
+          access_token: localStorage.access_token
+        }
+      }).then(function (res) {
+        _this2.$emit("afterDelete", 'threadsPage');
+
+        swal({
+          title: "SUCCESS",
+          text: "comment success to delete",
+          icon: "success"
+        });
+      }).catch(function (err) {
+        console.log(err);
+        swal({
+          title: "FAILED",
+          icon: "error"
+        });
+      });
     }
   },
   created: function created() {
@@ -12613,20 +13201,25 @@ exports.default = _default;
     { staticClass: "row" },
     [
       _c("h3", [
-        _c("span", [_vm._v("title:")]),
+        _c("span", [_vm._v("title: ")]),
         _vm._v(_vm._s(_vm.threadDetailId.title)),
       ]),
       _vm._v(" "),
       _c("p", [
-        _c("span", [_vm._v("desc:")]),
+        _c("span", [_vm._v("desc: ")]),
         _vm._v(_vm._s(_vm.threadDetailId.description)),
       ]),
       _vm._v(" "),
       _c("p", [
-        _c("span", [_vm._v("by:" + _vm._s(_vm.threadDetailId.User.name))]),
+        _c("span", [_vm._v("by: " + _vm._s(_vm.threadDetailId.User.name))]),
       ]),
       _vm._v(" "),
-      _c("table", { staticClass: "table table-hover" }, [
+      _c("p", [
+        _c("span", [_vm._v("comments: ")]),
+        _vm._v(_vm._s(_vm.threadDetailId.Comments.length)),
+      ]),
+      _vm._v(" "),
+      _c("table", { staticClass: "table table-hover w-auto " }, [
         _vm._m(0),
         _vm._v(" "),
         _c(
@@ -12638,6 +13231,21 @@ exports.default = _default;
               ]),
               _vm._v(" "),
               _c("td", [_vm._v(_vm._s(comment.description))]),
+              _vm._v(" "),
+              _c("td", [
+                _c("i", {
+                  staticClass: "fas fa-trash btn",
+                  on: {
+                    click: function ($event) {
+                      $event.preventDefault()
+                      return _vm.deleteComment(
+                        _vm.threadDetailId.id,
+                        comment.id
+                      )
+                    },
+                  },
+                }),
+              ]),
             ])
           }),
           0
@@ -12751,8 +13359,6 @@ var _default = {
           access_token: localStorage.access_token
         }
       }).then(function (res) {
-        console.log(res);
-
         _this.$emit("afterPostThread", "homePage");
       }).catch(function (err) {
         console.log(err);
@@ -12773,7 +13379,7 @@ exports.default = _default;
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", {}, [
+  return _c("div", { staticClass: "row mt-5" }, [
     _c("form", [
       _c("legend", [_vm._v("Post A thread")]),
       _vm._v(" "),
@@ -12797,11 +13403,7 @@ exports.default = _default;
             },
           ],
           staticClass: "form-control",
-          attrs: {
-            type: "text",
-            id: "exampleInputPassword1",
-            placeholder: "full name",
-          },
+          attrs: { type: "text", id: "exampleInputPassword1" },
           domProps: { value: _vm.titleForm },
           on: {
             input: function ($event) {
@@ -12952,6 +13554,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
+//
 var _default = {
   name: 'App',
   data: function data() {
@@ -12979,7 +13584,6 @@ var _default = {
       this.pageName = page;
     },
     threadDetailId: function threadDetailId(page, thread) {
-      // console.log(thread,'yang ini');
       this.pageName = page;
       this.thread = thread;
     },
@@ -12997,8 +13601,13 @@ var _default = {
     },
     threadDetailIdThread: function threadDetailIdThread(page, thread) {
       this.pageName = page;
-      console.log(thread, 'ini yg dimasksu');
       this.thread = thread;
+    },
+    afterDelete: function afterDelete(page) {
+      this.pageName = page;
+    },
+    directToRegister: function directToRegister(page) {
+      this.pageName = page;
     }
   },
   components: {
@@ -13056,14 +13665,26 @@ exports.default = _default;
             },
           })
         : _vm.pageName == "loginPage"
-        ? _c("Login", { on: { directToHome: _vm.directToHome } })
+        ? _c("Login", {
+            on: {
+              directToRegister: _vm.directToRegister,
+              directToHome: _vm.directToHome,
+            },
+          })
         : _vm.pageName == "homePage"
         ? _c("Home", {
-            on: { threadDetailId: _vm.threadDetailId, userData: _vm.userData },
+            on: {
+              threadDetailId: _vm.threadDetailId,
+              userData: _vm.userData,
+              directToThreadsList: _vm.directToThreadsList,
+            },
           })
         : _vm.pageName == "threadsPage"
         ? _c("ThreadPage", {
-            on: { threadDetailIdThread: _vm.threadDetailIdThread },
+            on: {
+              threadDetailId: _vm.threadDetailId,
+              afterDelete: _vm.afterDelete,
+            },
           })
         : _vm.pageName == "threadsDetail"
         ? _c("ThreadDetail", {
@@ -13151,7 +13772,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50989" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49886" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

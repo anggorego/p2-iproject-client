@@ -1,10 +1,10 @@
 <template>
   <div class="row">
-    <h3><span>title:</span>{{threadDetailId.title}}</h3>
-    <p><span>desc:</span>{{threadDetailId.description}}</p>
-    <p><span>by:{{threadDetailId.User.name}}</span></p>
-    <!-- <h6>comments</h6> -->
-<table class="table table-hover">
+    <h3><span>title: </span>{{threadDetailId.title}}</h3>
+    <p><span>desc: </span>{{threadDetailId.description}}</p>
+    <p><span>by: {{threadDetailId.User.name}}</span></p>
+    <p><span>comments: </span>{{threadDetailId.Comments.length}}</p>
+<table class="table table-hover w-auto ">
   <thead>
     <tr>
       <th scope="col">name</th>
@@ -20,6 +20,7 @@
         {{comment.User.name}}
         </th>
       <td>{{comment.description}}</td>
+      <td><i class="fas fa-trash btn" @click.prevent="deleteComment(threadDetailId.id,comment.id)" ></i></td>
     </tr>
   </tbody>
 </table>
@@ -50,7 +51,7 @@ export default {
           }
       })
       .then(res=>{
-        console.log(res.data);
+        
         this.comments = res.data.Comments
       })
       .catch(err=>{
@@ -59,7 +60,32 @@ export default {
     },
     backToHome(page){
       this.$emit("backToHome",page)
+    },
+    deleteComment(threadid,commentid){
+      
+      axios
+      .delete(`http://localhost:3000/comments/${threadid}/${commentid}`,{
+        headers:{
+          access_token: localStorage.access_token
+        }
+      })
+      .then(res=>{
+        this.$emit("afterDelete",'threadsPage')
+            swal({
+          title: "SUCCESS",
+          text: "comment success to delete",
+          icon: "success",
+          });
+      })
+      .catch(err=>{
+        console.log(err);
+          swal({
+              title: "FAILED",
+              icon: "error",
+            });
+      })
     }
+
   },
   created() {
     this.fetchThreadById()

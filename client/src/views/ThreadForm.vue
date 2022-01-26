@@ -1,11 +1,11 @@
 <template>
-    <div class="">
+    <div class="row mt-5">
     <form>
     <legend>Post A thread</legend>
     <div class="form-group">
       <label for="exampleInputPassword1" class="form-label mt-4">
       Title</label>
-      <input type="text" class="form-control" id="exampleInputPassword1" placeholder="full name"
+      <input type="text" class="form-control" id="exampleInputPassword1"
       v-model="titleForm"
       >
       <label for="exampleTextarea" class="form-label mt-4">description</label>
@@ -41,7 +41,7 @@ export default {
           }
       })
       .then(res=>{
-        console.log(res);
+      
         this.$emit("afterPostThread","homePage")
       })
       .catch(err=>{

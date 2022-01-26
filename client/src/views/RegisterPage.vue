@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div class="row mt-5">
       <form>
     <fieldset>
       <legend>REGISTER FORM</legend>
@@ -26,7 +26,7 @@
       @click.prevent="clickButtonRegister"
       >Submit</button>
     </fieldset>
-      <p>already have an account ? </p> 
+      <p class="mt-3"> already have an account ? </p> 
      <button type="submit" class="btn btn-secondary"
       @click.prevent="clickButtonLoginRegister"
       >login here</button>
