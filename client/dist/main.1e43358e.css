@@ -1,0 +1,19 @@
+.navbar-collapse[data-v-48d281]{
+  justify-content: space-between;
+}
+.row[data-v-b00bbc]{
+  justify-content: space-evenly;
+}
+.card[data-v-b00bbc]{
+  justify-content: space-around;
+}
+.row[data-v-1e79e7] {
+    display: -ms-flexbox;
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+}
