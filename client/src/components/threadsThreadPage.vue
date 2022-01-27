@@ -42,7 +42,7 @@ export default {
   methods: {
     fetchThreadsByUser(){
       axios
-      .get("http://localhost:3000/threads/byuser",{
+      .get("https://gym-freaks-new.herokuapp.com/threads/byuser",{
           headers:{
             access_token: localStorage.access_token
           }
@@ -60,7 +60,7 @@ export default {
     },
     deleteThread(id){
         axios
-        .delete(`http://localhost:3000/threads/${id}`,{
+        .delete(`https://gym-freaks-new.herokuapp.com/threads/${id}`,{
           headers:{
             access_token: localStorage.access_token
           }

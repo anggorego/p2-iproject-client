@@ -115,7 +115,7 @@ export default {
     },
     fetchUser(){
       axios
-        .get("http://localhost:3000/user",{
+        .get("https://gym-freaks-new.herokuapp.com/user",{
           headers:{
             access_token: localStorage.access_token
           }
@@ -137,7 +137,7 @@ export default {
       });
       }
     axios
-      .get(`http://localhost:3000/bmr?weight=${this.weight}&&height=${this.height}&&age=${this.age}&&sex=${this.sex}`)
+      .get(`https://gym-freaks-new.herokuapp.com/bmr?weight=${this.weight}&&height=${this.height}&&age=${this.age}&&sex=${this.sex}`)
       .then(res=>{
         this.weight='',
         this.height='',

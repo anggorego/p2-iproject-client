@@ -46,7 +46,7 @@ export default {
             });
         }
       axios
-      .post("http://localhost:3000/login",{
+      .post("https://gym-freaks-new.herokuapp.com/login",{
             email:this.emailLogin,
             password:this.passwordLogin
       })

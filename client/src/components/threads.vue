@@ -38,7 +38,7 @@ export default {
    methods: {
     fetchThreads(){
     axios
-      .get("http://localhost:3000/threads",{
+      .get("https://gym-freaks-new.herokuapp.com/threads",{
           headers:{
             access_token: localStorage.access_token
           }

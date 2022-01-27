@@ -32,7 +32,7 @@ export default {
   methods: {
     clickButtonThread(){
       axios
-      .post("http://localhost:3000/threads",{
+      .post("https://gym-freaks-new.herokuapp.com/threads",{
         title:this.titleForm,
         description:this.descForm
       },{

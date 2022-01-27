@@ -45,7 +45,7 @@ export default {
   methods: {
     fetchThreadById(){
       axios
-      .get(`http://localhost:3000/threads/${this.threadDetailId.id}`,{
+      .get(`https://gym-freaks-new.herokuapp.com/threads/${this.threadDetailId.id}`,{
          headers:{
             access_token: localStorage.access_token
           }
@@ -64,7 +64,7 @@ export default {
     deleteComment(threadid,commentid){
       
       axios
-      .delete(`http://localhost:3000/comments/${threadid}/${commentid}`,{
+      .delete(`https://gym-freaks-new.herokuapp.com/comments/${threadid}/${commentid}`,{
         headers:{
           access_token: localStorage.access_token
         }

@@ -48,7 +48,7 @@ export default {
   methods: {
     clickButtonRegister(){
       axios
-           .post("http://localhost:3000/register",{
+           .post("https://gym-freaks-new.herokuapp.com/register",{
               name: this.nameRegister,
               email: this.emailRegister,
               password: this.passwordRegister,

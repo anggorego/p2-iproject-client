@@ -25,7 +25,7 @@ export default {
   methods: {
     clickButtonComment(id){
       axios
-      .post(`http://localhost:3000/comments/${id}`,{
+      .post(`https://gym-freaks-new.herokuapp.com/comments/${id}`,{
         description: this.descriptionComment
       },{
          headers:{
